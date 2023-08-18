@@ -1,8 +1,8 @@
 from address_book import address_book
-from notes import notes
-from birthdays import birthdays
-from about_us import about_us
-from sort import sort
+from notes import main as notes
+from birthdays import main as birthdays
+from about_us import main as about_us
+from sort import main as sort
 
 
 def main():
