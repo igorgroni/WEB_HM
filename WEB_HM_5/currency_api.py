@@ -18,6 +18,7 @@ class CurrencyAPI:
                     )
 
                 # Обрізаємо дані за останні 'days' днів
-                data = data[-days:]
+                # data = data[-days:]
+                data = data[-min(days, len(data)) :]
 
                 return data
