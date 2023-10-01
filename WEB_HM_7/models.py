@@ -12,7 +12,7 @@ Base = declarative_base()
 
 class Student(Base):
     __tablename__ = "students"
-    Student_ID = Column(Integer(), primary_key=True)
+    StudentID = Column(Integer(), primary_key=True)
     FirstName = Column(String(250), nullable=False)
     LastName = Column(String(250), nullable=False)
     GroupID = Column(Integer(), ForeignKey("groups.GroupID", ondelete="CASCADE"))
@@ -53,8 +53,9 @@ class Lesson(Base):
 class Grade(Base):
     __tablename__ = "rating"
     RateID = Column(Integer(), primary_key=True)
-    StudentID = Column(Integer(), ForeignKey("students.Student_ID", ondelete="CASCADE"))
+    StudentID = Column(Integer(), ForeignKey("students.StudentID", ondelete="CASCADE"))
     LessonID = Column(Integer(), ForeignKey("lessons.LessonID", ondelete="CASCADE"))
+    Rate = Column(Integer())
 
     student = relationship("Student", back_populates="rating")
     lessons = relationship("Lesson", back_populates="rating")
