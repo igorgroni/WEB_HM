@@ -23,8 +23,11 @@
             <ul>
                 <li><a href="{% url 'users:signup' %}" role="button">Sign Up</a></li>
                 <li><a href="{% url 'users:login' %}" role="button">Login</a></li>
+                <li><a href="{% url 'quotesapp:author_page' %}" role="button">View Authors</a></li>
+                <li><a href="{% url 'quotesapp:quotes' %}" role="button">View Quotes</a></li>
             </ul>
             {% endif %}
+            
             </nav>
 
         {% for quote in quotes %}

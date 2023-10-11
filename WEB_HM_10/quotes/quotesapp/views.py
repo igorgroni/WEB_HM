@@ -1,13 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import AutorForm, QuoteForm
 from .models import Author, Quote
+from .utils import get_mongo_db
 
 # Create your views here.
 
 
 def main(request):
+    # db = get_mongo_db()
+    # quotes = db.quotes.find()
     quotes = Quote.objects.all()
     return render(request, 'quotesapp/index.html', {"quotes": quotes})
+
+
+def author_page(request, author_id):
+    author = Author.objects.get(pk=author_id)
+    return render(request, 'author_page.html', {'author': author})
 
 
 def autor(request):

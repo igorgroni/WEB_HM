@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Author Page</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+</head>
+
+<body>
+    <main class="container">
+        <h1>Author Details</h1>
+        <p>Author Name: {{ author.name }}</p>
+        <!-- Дополнительная информация об авторе, если необходимо -->
+        <!-- Пример: <p>Author Bio: {{ author.bio }}</p> -->
+
+        <!-- Ссылка для возврата на главную страницу или другую страницу по вашему выбору -->
+        <a href="{% url 'main_page' %}">Back to Main Page</a>
+    </main>
+</body>
+
+</html>
