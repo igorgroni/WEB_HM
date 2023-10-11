@@ -9,7 +9,37 @@
 
 <body>
     <main class="container">
-        <h1>Main page</h1>
+        <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
+            {% if user.is_authenticated %}
+            <ul>
+                <li><a href="{% url 'quotesapp:quote' %}" role="button">Add quote</a></li>
+                <li><a href="{% url 'quotesapp:author' %}" role="button">Add Author</a></li>
+            </ul>
+            <ul>
+                <li>Welcome <b>{{ user.username }}!</b></li>
+                <li><a href="{% url 'users:logout' %}" role="button">Logout</a></li>
+            </ul>
+            {% else %}
+            <ul>
+                <li><a href="{% url 'users:signup' %}" role="button">Sign Up</a></li>
+                <li><a href="{% url 'users:login' %}" role="button">Login</a></li>
+            </ul>
+            {% endif %}
+            </nav>
+
+        {% for quote in quotes %}
+        <ul>
+            <li>
+                {% if not quote.done %}
+                <a href="{% url 'quotesapp:detail' quote.id %}" role="button" class="outline"> {{ quotes.name }} </a>
+                <a href="{% url 'quotesapp:set_done' quote.id %}" role="button"> Mark Done </a>
+                <a href="{% url 'quotesapp:delete' quote.id %}" role="button" class="contrast"> Delete quote </a>
+                {% else %}
+                <a href="{% url 'quotesapp:detail' quote.id %}" role="button" class="secondary"><s>{{ quote.name }}</s></a>
+                {% endif %}
+            </li>
+        </ul>
+        {% endfor %}
     </main>
 </body>
 

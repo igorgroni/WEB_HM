@@ -5,7 +5,7 @@
 <form method="POST" action="{% url 'quotesapp:author' %}">
     {% csrf_token %}
     <div style="padding: 10px">
-        <label>Enter the tag name:
+        <label>Enter the author name:
             {{form.name}}
         </label>
         <span>{{ form.errors.name }}</span>

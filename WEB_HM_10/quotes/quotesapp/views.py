@@ -1,12 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import AutorForm, QuoteForm
-from .models import Author
+from .models import Author, Quote
 
 # Create your views here.
 
 
 def main(request):
-    return render(request, 'quotesapp/index.html')
+    quotes = Quote.objects.all()
+    return render(request, 'quotesapp/index.html', {"quotes": quotes})
 
 
 def autor(request):
@@ -31,11 +32,26 @@ def quote(request):
 
             choice_authors = Author.objects.filter(
                 name__in=request.POST.getlist('authors'))
-            for tag in choice_authors.iterator():
-                new_quote.authors.add(tag)
+            for author in choice_authors.iterator():
+                new_quote.authors.add(author)
 
             return redirect(to='quotesapp:main')
         else:
             return render(request, 'quotesapp/quotes.html', {"authors": authors, 'form': form})
 
     return render(request, 'quotesapp/quotes.html', {"authors": authors, 'form': QuoteForm()})
+
+
+def detail(request, quote_id):
+    quote = get_object_or_404(Quote, pk=quote_id)
+    return render(request, 'quotesapp/detail.html', {"quote": quote})
+
+
+def set_done(request, quote_id):
+    Quote.objects.filter(pk=quote_id).update(done=True)
+    return redirect(to='quotesapp:main')
+
+
+def delete_note(request, quote_id):
+    Quote.objects.get(pk=quote_id).delete()
+    return redirect(to='quotesapp:main')
