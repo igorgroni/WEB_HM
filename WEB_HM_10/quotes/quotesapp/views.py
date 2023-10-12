@@ -7,15 +7,20 @@ from .utils import get_mongo_db
 
 
 def main(request):
-    db = get_mongo_db()
-    quotes = db.quote.find()
-    # quotes = Quote.objects.all()
+    # db = get_mongo_db()
+    # quotes = db.quote.find()
+
+    quotes = Quote.objects.all()
     return render(request, 'quotesapp/index.html', context={"quotes": quotes})
 
 
-def author_page(request, author_id):
-    author = Author.objects.get(pk=author_id)
-    return render(request, 'author_page.html', {'author': author})
+def author_page(request):
+    author = Author.objects.all()
+    return render(request, 'quotesapp/authors_page.html', {'authors': author})
+
+def quotes_page(request):
+    quote = Quote.objects.all()
+    return render(request, 'quotesapp/quotes_page.html', {'quotes': quote})
 
 
 def autor(request):

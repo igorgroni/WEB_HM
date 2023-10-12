@@ -1,3 +1,6 @@
+{% extends "quotesapp/base.html" %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,8 +18,9 @@
         <!-- Пример: <p>Author Bio: {{ author.bio }}</p> -->
 
         <!-- Ссылка для возврата на главную страницу или другую страницу по вашему выбору -->
-        <a href="{% url 'main_page' %}">Back to Main Page</a>
+        
     </main>
 </body>
 
 </html>
+{% endblock %}

@@ -14,8 +14,8 @@
             <ul>
                 <li><a href="{% url 'quotesapp:quote' %}" role="button">Add quote</a></li>
                 <li><a href="{% url 'quotesapp:author' %}" role="button">Add Author</a></li>
-                <li><a href="{% url 'quotesapp:author' %}" role="button">View Authors</a></li>
-                <li><a href="{% url 'quotesapp:quote' %}" role="button">View Quotes</a></li>
+                <li><a href="{% url 'quotesapp:authors_page' %}" role="button">View Authors</a></li>
+                <li><a href="{% url 'quotesapp:quotes_page' %}" role="button">View Quotes</a></li>
             </ul>
             <ul>
                 <li>Welcome <b>{{ user.username }}!</b></li>
@@ -25,8 +25,8 @@
             <ul>
                 <li><a href="{% url 'users:signup' %}" role="button">Sign Up</a></li>
                 <li><a href="{% url 'users:login' %}" role="button">Login</a></li>
-                <li><a href="{% url 'quotesapp:author' %}" role="button">View Authors</a></li>
-                <li><a href="{% url 'quotesapp:quote' %}" role="button">View Quotes</a></li>
+                <li><a href="{% url 'quotesapp:authors_page' %}" role="button">View Authors</a></li>
+                <li><a href="{% url 'quotesapp:quotes_page' %}" role="button">View Quotes</a></li>
             </ul>
             {% endif %}
             
