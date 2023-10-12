@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'quotes.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
+        'NAME': 'postgres2',
         'USER': 'postgres',
         'PASSWORD': '567234',
         'HOST': '127.0.0.1',
