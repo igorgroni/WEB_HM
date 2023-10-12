@@ -4,15 +4,15 @@ from django.db import models
 
 
 class Author(models.Model):
-    fullname = models.CharField(max_length=25, null=False, unique=True)
-    born_date = models.CharField(max_length=50)
-    born_location = models.CharField(max_length=25, null=False, unique=True)
+    fullname = models.CharField(max_length=250, null=False, unique=True)
+    born_date = models.CharField(max_length=250)
+    born_location = models.CharField(max_length=250, null=False, unique=False)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=25, null=False, unique=True)
+    name = models.CharField(max_length=250, null=False, unique=True)
 
 class Quote(models.Model):
     quote = models.TextField()
