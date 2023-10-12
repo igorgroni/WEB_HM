@@ -7,6 +7,7 @@ from bson.objectid import ObjectId
 config = configparser.ConfigParser()
 config.read('config.ini')
 
+[DB]
 mongo_user = config.get('DB', 'user')
 mongodb_pass = config.get('DB', 'pass')
 db_name = config.get('DB', 'db_name')

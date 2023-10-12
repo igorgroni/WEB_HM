@@ -7,10 +7,10 @@ from .utils import get_mongo_db
 
 
 def main(request):
-    # db = get_mongo_db()
-    # quotes = db.quotes.find()
-    quotes = Quote.objects.all()
-    return render(request, 'quotesapp/index.html', {"quotes": quotes})
+    db = get_mongo_db()
+    quotes = db.quote.find()
+    # quotes = Quote.objects.all()
+    return render(request, 'quotesapp/index.html', context={"quotes": quotes})
 
 
 def author_page(request, author_id):

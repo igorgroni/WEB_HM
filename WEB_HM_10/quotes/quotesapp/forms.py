@@ -9,7 +9,7 @@ class AutorForm(ModelForm):
 
     class Meta:
         model = Author
-        fields = ['name']
+        fields = ['fullname']
 
 
 class QuoteForm(ModelForm):
