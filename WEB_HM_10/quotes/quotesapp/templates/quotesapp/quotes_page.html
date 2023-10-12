@@ -29,8 +29,10 @@
                     <div class="quote" itemscope="" itemtype="http://schema.org/CreativeWork">
                         <span class="text" itemprop="text">
                             {{ quote.quote }}
-                        </span>
-                        <span>by <small class="author" itemprop="author">
+                        <span>
+                        <span>
+                            by 
+                            <small class="author" itemprop="author">
                                 {{ quote.author.fullname }}
                             </small> <a href="/author/{{ quote.author.fullname }}"></a></span>
                         </div>

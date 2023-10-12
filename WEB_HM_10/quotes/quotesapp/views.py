@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import AutorForm, QuoteForm
 from .models import Author, Quote
 from .utils import get_mongo_db
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -15,9 +16,20 @@ def author_page(request):
     author = Author.objects.all()
     return render(request, 'quotesapp/authors_page.html', {'authors': author})
 
+
+
+
 def quotes_page(request):
     quote = Quote.objects.all()
     return render(request, 'quotesapp/quotes_page.html', {'quotes': quote})
+
+
+# def quotes_page(request, page=1):
+#     quotes = Quote.objects()
+#     per_page = 10
+#     paginator = Paginator(list(quotes), per_page)
+#     quotes_on_page = paginator.page(page)
+#     return render(request, 'quotesapp/quotes_page.html', context={'quotes': quotes_on_page})
 
 
 def autor(request):
