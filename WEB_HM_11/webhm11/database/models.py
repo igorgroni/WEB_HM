@@ -15,4 +15,4 @@ class Contact(Base):
     last_name = Column(String(50), nullable=False)
     email = Column(String(250), unique=True, nullable=False)
     phone = Column(String(20), nullable=False)
-    birthday = Column(Date, nullable=False)
+    birthday = Column(DateTime)
