@@ -6,10 +6,12 @@ from sqlalchemy.orm import Session
 
 from database.db import get_db
 from routes import contacts
+from routes import auth
 
 app = FastAPI()
 
 app.include_router(contacts.router, prefix="/api")
+app.include_router(auth.router, prefix="/api")
 
 
 @app.middleware("http")
