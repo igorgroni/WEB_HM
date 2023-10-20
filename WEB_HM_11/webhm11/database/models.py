@@ -16,3 +16,16 @@ class Contact(Base):
     email = Column(String(250), unique=True, nullable=False)
     phone = Column(String(20), nullable=False)
     birthday = Column(DateTime)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), default=None)
+    user = relationship("User", backref="contacts")
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String(50), unique=True, nullable=False)
+    email = Column(String(250), unique=True, nullable=False)
+    password = Column(String(250), nullable=False)
+    avatar = Column(String(250), nullable=True)
+    refresh_token = Column(String(250), nullable=True)
