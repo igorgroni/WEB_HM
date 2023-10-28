@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr
 from datetime import date
+from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
 
 
 class ContactModel(BaseModel):
@@ -47,3 +48,19 @@ class TokenModel(BaseModel):
     access_token: str
     refresh_token: str
     token_type: str = "bearer"
+
+
+class EmailSchema(BaseModel):
+    email: EmailStr
+
+
+class ResponseModel(BaseModel):
+    message: str
+    avatar_url: str
+
+
+class RequestEmail(BaseModel):
+    email: EmailStr
+
+    class Config:
+        from_attributes = True

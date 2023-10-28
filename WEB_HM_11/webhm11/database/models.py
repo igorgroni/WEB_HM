@@ -29,3 +29,4 @@ class User(Base):
     password = Column(String(250), nullable=False)
     avatar = Column(String(250), nullable=True)
     refresh_token = Column(String(250), nullable=True)
+    confirmed = Column(Boolean, default=False)

@@ -6,15 +6,25 @@ from sqlalchemy.orm import Session
 from database.db import get_db
 from schemas import ResponseContact, ContactModel
 from repository import contacts as repository_contacts
+from fastapi_limiter.depends import RateLimiter
+from services.auth import Auth as auth_service
+from database.models import User
+from fastapi_limiter import FastAPILimiter
+from fastapi_limiter.depends import RateLimiter
 
 
 router = APIRouter(prefix="/contacts", tags=["contacts"])
+
+# limiter = FastAPILimiter(key_func=lambda _: "user_id", rate="10/minute")
+# limiter = FastAPILimiter(key_func=lambda _: "user_id")
 
 
 @router.get(
     "/all",
     response_model=List[ResponseContact],
+    dependencies=[Depends(RateLimiter(times=2, seconds=5))],
 )
+# @limiter.limit("10/minute")
 async def get_contacts(db: Session = Depends(get_db)):
     contacts = await repository_contacts.get_contacts(db)
     return contacts

@@ -1,6 +1,16 @@
 from typing import List
 
-from fastapi import APIRouter, HTTPException, Depends, status, Security
+from fastapi import (
+    APIRouter,
+    HTTPException,
+    Depends,
+    status,
+    Security,
+    BackgroundTasks,
+    Request,
+    File,
+    UploadFile,
+)
 from fastapi.security import (
     OAuth2PasswordRequestForm,
     HTTPAuthorizationCredentials,
@@ -12,6 +22,12 @@ from database.db import get_db
 from schemas import UserModel, ResponseUser, TokenModel
 from repository import users as repository_users
 from services.auth import auth_service
+from services.email import send_email
+from schemas import UserModel, TokenModel, RequestEmail, ResponseModel
+import cloudinary
+from cloudinary.uploader import upload
+from cloudinary.utils import cloudinary_url
+
 
 router = APIRouter(prefix="/auth")
 security = HTTPBearer()
@@ -28,7 +44,13 @@ async def signup(body: UserModel, db: Session = Depends(get_db)):
         )
     body.password = auth_service.get_password_hash(body.password)
     new_user = await repository_users.create_user(body, db)
-    return {"user": new_user, "detail": "User successfully created"}
+    BackgroundTasks.add_task(
+        send_email, new_user.email, new_user.username, Request.base_url
+    )
+    return {
+        "user": new_user,
+        "detail": "User successfully created. Check your email for confirmation.",
+    }
 
 
 @router.post("/login", response_model=TokenModel)
@@ -39,6 +61,10 @@ async def login(
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email"
+        )
+    if not user.confirmed:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Email not confirmed"
         )
     if not auth_service.verify_password(body.password, user.password):
         raise HTTPException(
@@ -78,3 +104,53 @@ async def refresh_token(
         "refresh_token": refresh_token,
         "token_type": "bearer",
     }
+
+
+@router.get("/confirmed_email/{token}")
+async def confirmed_email(token: str, db: Session = Depends(get_db)):
+    email = await auth_service.get_email_from_token(token)
+    user = await repository_users.get_user_by_email(email, db)
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Verification error"
+        )
+    if user.confirmed:
+        return {"message": "Your email is already confirmed"}
+    await repository_users.confirmed_email(email, db)
+    return {"message": "Email confirmed"}
+
+
+@router.post("/request_email")
+async def request_email(
+    body: RequestEmail,
+    background_tasks: BackgroundTasks,
+    request: Request,
+    db: Session = Depends(get_db),
+):
+    user = await repository_users.get_user_by_email(body.email, db)
+
+    if user.confirmed:
+        return {"message": "Your email is already confirmed"}
+    if user:
+        background_tasks.add_task(
+            send_email, user.email, user.username, request.base_url
+        )
+    return {"message": "Check your email for confirmation."}
+
+
+@router.post("/update-avatar/{user_id}", response_model=ResponseModel, tags=["user"])
+async def update_user_avatar(
+    user_id: int,
+    avatar: UploadFile = File(...),
+):
+    # Отримайте зображення з запиту та завантажте його в Cloudinary
+    upload_result = upload(avatar.file)
+
+    # Отримайте URL завантаженого аватара з Cloudinary
+    avatar_url, options = cloudinary_url(
+        upload_result["public_id"],
+        format=upload_result["format"],
+        width=150,  # розмір вашого аватара
+        height=150,
+    )
+    return {"message": "Аватар користувача успішно оновлено", "avatar_url": avatar_url}
